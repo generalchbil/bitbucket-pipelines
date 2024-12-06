@@ -9,60 +9,18 @@ pipelines:
   branches: # Automated triggers on commits to branches
     develop: # -- When committing to release branch
       - step:
-          deployment: qa
+          deployment: dev
           name: Deploy src
           script:
-            - 'echo " Start : Deploying to Staging environment QA"'
+            - 'echo " Start : Deploying to Staging environment DEV"'
             - mkdir -p ~/.ssh
             - ssh-keyscan -t rsa $HOSTNAME > my_known_hosts
             - cat my_known_hosts >> ~/.ssh/knows_hosts
             - rm  my_known_hosts
             - umask 077 ; echo $SSH_KEY | base64 --decode -i > ~/.ssh/id_rsa
             - ssh -i ~/.ssh/id_rsa -vv $USER@$HOSTNAME -p $PORT "cd $BITBUCKET_BRANCH/$PROJECT_NAME && git checkout $BITBUCKET_BRANCH && git pull && make start"
-            - 'echo " Finish : Deploying to Staging environment QA "'
-    uat: # -- When committing to release branch
-      - step:
-          deployment: uat
-          name: Deploy src
-          script:
-            - 'echo " Start : Deploying to Staging environment UAT"'
-            - mkdir -p ~/.ssh
-            - ssh-keyscan -t rsa $HOSTNAME > my_known_hosts
-            - cat my_known_hosts >> ~/.ssh/knows_hosts
-            - rm  my_known_hosts
-            - umask 077 ; echo $SSH_KEY | base64 --decode -i > ~/.ssh/id_rsa
-            - ssh -i ~/.ssh/id_rsa -vv $USER@$HOSTNAME -p $PORT "cd $BITBUCKET_BRANCH/$PROJECT_NAME && git checkout $BITBUCKET_BRANCH && git pull && make start"
-            - 'echo " Finish : Deploying to Staging environment UAT "'
-
-    demo/*: # -- When committing to release branch
-      - step:
-          deployment: demo
-          name: Deploy src
-          script:
-            - 'echo " Start : Deploying to Staging environment Demo"'
-            - mkdir -p ~/.ssh
-            - ssh-keyscan -t rsa $HOSTNAME > my_known_hosts
-            - cat my_known_hosts >> ~/.ssh/knows_hosts
-            - rm  my_known_hosts
-            - umask 077 ; echo $SSH_KEY | base64 --decode -i > ~/.ssh/id_rsa
-            - ssh -i ~/.ssh/id_rsa -vv $USER@$HOSTNAME -p $PORT "cd $BITBUCKET_BRANCH/$PROJECT_NAME && git checkout $BITBUCKET_BRANCH && git pull && make start"
-            - 'echo " Finish : Deploying to Staging environment Demo "'
-
-    pprod: # -- When committing to release branch
-      - step:
-          deployment: pprod
-          name: Deploy src
-          script:
-            - 'echo " Start : Deploying to environment PPROD"'
-            - mkdir -p ~/.ssh
-            - ssh-keyscan -t rsa $HOSTNAME > my_known_hosts
-            - cat my_known_hosts >> ~/.ssh/knows_hosts
-            - rm  my_known_hosts
-            - umask 077 ; echo $SSH_KEY | base64 --decode -i > ~/.ssh/id_rsa
-            - ssh -i ~/.ssh/id_rsa -vv $USER@$HOSTNAME -p $PORT "cd $PROJECT_NAME && git checkout $BITBUCKET_BRANCH && git pull && make start"
-            - 'echo " Finish : Deploying to environment PPROD "'
-
-
+            - 'echo " Finish : Deploying to Staging environment DEV "'
+    
     master: # -- When committing to release branch
       - step:
           deployment: production
